@@ -6,18 +6,18 @@ USE [toolingDB]
 GO
 
 CREATE TABLE Operario(
-    id_operario INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    nombre varchar(255) NOT NULL
+    Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Nombre varchar(255) NOT NULL
     )
 
-CREATE TABLE Tipo_reparacion (
-    id_tipo_reparacion INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    nom_tipo_reparacion VARCHAR (50) NOT NULL
+CREATE TABLE Trabajo (
+    Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR (50) NOT NULL
 )
 
-CREATE TABLE Elemento_reparado(
-    id_elemento_reparado INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    nom_elemento_reparado VARCHAR(50) NOT NULL
+CREATE TABLE Elemento(
+    Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(50) NOT NULL
 )
 
 --CREATE TABLE Herramienta_reparacion(
@@ -25,32 +25,33 @@ CREATE TABLE Elemento_reparado(
 --    nom_herramienta VARCHAR(50) NOT NULL)
 
 CREATE TABLE  Medida(
-    id_medida INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    nom_medida VARCHAR(50) NOT NULL
+    Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(50) NOT NULL
 )
 
 CREATE TABLE Disenio(
-    id_disenio INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    nom_disenio VARCHAR(50) NOT NULL
+    Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(50) NOT NULL
 )
 
 CREATE TABLE Intervencion(
-    id_intervencion INT NOT NULL PRIMARY KEY IDENTITY(1,1),
-    operario INT NOT NULL,
-    nro_serie INT NOT NULL,
-    detalle VARCHAR(MAX) NULL,
-    tiempo time NOT NULL,
-    fecha DATE NOT NULL, --Segun el relevamiento las intervenciones no duran mas de un dia
-    tipo_reparacion INT NOT NULL,
-    elemento_reparado INT NOT NULL,
+    Id INT NOT NULL PRIMARY KEY IDENTITY(1,1),
+    IdOperario INT NOT NULL,
+    Nro_serie INT NOT NULL,
+    Detalle VARCHAR(MAX) NULL,
+    Tiempo time NOT NULL,
+    Fecha DATE NOT NULL, --Segun el relevamiento las intervenciones no duran mas de un dia
+    IdTrabajo INT NOT NULL,
+    IdElemento INT NOT NULL,
     --herramienta_reparacion INT NOT NULL,
-    medida INT NOT NULL,
-    disenio INT NOT NULL,
-    CONSTRAINT FK_tipo_reparacion FOREIGN KEY (tipo_reparacion) REFERENCES Tipo_reparacion(id_tipo_reparacion),
-    CONSTRAINT FK_elemento_reparado FOREIGN KEY (elemento_reparado) REFERENCES Elemento_reparacion(id_tipo_reparacion),
+    IdMedida INT NOT NULL,
+    IdDisenio INT NOT NULL,
+	CONSTRAINT fk_Intervencion_Operario FOREIGN KEY (IdOperario) REFERENCES Operario(Id),
+    CONSTRAINT fk_Intervencion_Trabajo FOREIGN KEY (IdTrabajo) REFERENCES Trabajo(Id),
+    CONSTRAINT FK_Intervencion_Elemento FOREIGN KEY (IdElemento) REFERENCES Elemento(Id),
     --CONSTRAINT FK_herramienta_reparacion FOREIGN KEY (herramienta_reparacion) REFERENCES Herramienta_reparacion(id_herramienta),
-    CONSTRAINT FK_medida FOREIGN KEY (medida) REFERENCES Medida(id_medida),
-    CONSTRAINT FK_disenio FOREIGN KEY (disenio) REFERENCES Disenio(id_disenio) 
+    CONSTRAINT FK_Intervencion_Medida FOREIGN KEY (Idmedida) REFERENCES Medida(Id),
+    CONSTRAINT FK_Intervencion_Disenio FOREIGN KEY (IdDisenio) REFERENCES Disenio(Id) 
 )
 
 --Nombre prueba
@@ -63,7 +64,7 @@ VALUES('Juan Perez'),
 ('Alfonso rivero'),
 ('Jorge Rodriguez')
 
-INSERT INTO Tipo_reparacion(nom_tipo_reparacion)
+INSERT INTO Trabajo(Nombre)
 VALUES('ASIENTO DE ARO'),
 ('FLASH'),
 ('CAMBIO DE ESTAMPADO'),
@@ -83,7 +84,7 @@ VALUES('ASIENTO DE ARO'),
 ('OTRO')
 
 
-INSERT INTO Elemento_reparado(nom_elemento_reparado)
+INSERT INTO Elemento(Nombre)
 VALUES ('MOLDE'),
 ('ARO'),
 ('TAMBOR'),
@@ -100,7 +101,7 @@ VALUES ('MOLDE'),
 --INSERT INTO Herramienta_reparacion(nom_herramienta)
 --VALUES 
 
-INSERT INTO Medida(nom_medida)
+INSERT INTO Medida(Nombre)
 VALUES('13'),
 ('14'),
 ('15'),
@@ -124,7 +125,7 @@ VALUES('13'),
 ('44'),
 ('46')
 
-INSERT INTO Disenio(nom_medida)
+INSERT INTO Disenio(Nombre)
 VALUES ('C104'),
 ('C104V'),
 ('C105'),
